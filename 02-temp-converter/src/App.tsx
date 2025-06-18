@@ -2,39 +2,39 @@ import { useState } from 'react'
 import './App.css'
 
 function TempConverter({initial = 0}) {
-  const toC = (f: number) => (f - 32) * 5/9
-  const [cVal, setC] = useState(initial)
-  
-  const toF = (c: number) => (c * 9/5) + 32  
-  const [fVal, setF] = useState(toF(initial))
-  
+  const [celsius, setCelscius] = useState<number | "">(initial)
+  const fahrenheit = celsius === "" ? "" : (celsius * 9) / 5 + 32
 
 
-  const updateValue = (e:any, type: string = "C") => {
-    // console.log(e.target.value)
+  const handleCChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value
-    if (type=="C") {
-      setF(toF(input))
-      setC(input)
-    } else {
-      setC(toC(input))
-      setF(input)
-    }
-
-
+    setCelscius(input === "" ? "" : Number(input))
   }
+
+  const handleFChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value
+    setCelscius( input === "" ? "" : ((Number(input) - 32) * 5) / 9)
+  }
+
 
   return (
     <>
      <h2>Temperature Converter</h2>
     <div className="temp-box">
-    </div>
-    <div className="temp-box">
-    <h2>F</h2><input type="number" value={fVal} onChange={(e) => updateValue(e,"F")}  />
+    <h2>F</h2>
+    <input 
+      type="string" 
+      value={fahrenheit} 
+      onChange={handleFChange} 
+       />
     </div>
     <div>
     <h2>C</h2>
-     <input type="number" value={cVal} onChange={(e) => updateValue(e,"C")}/>
+     <input 
+        type="string" 
+        value={celsius} 
+        onChange={handleCChange}
+        />
     </div>
 
     </>
