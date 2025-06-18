@@ -9,3 +9,16 @@
   padding: 2em;
 }
 
+
+.input-boxes {
+  background-color: blue;
+}
+
+.input-boxes input:focus {
+  outline: none;
+}
+
+.error {
+
+  border: 2px solid red;
+}
