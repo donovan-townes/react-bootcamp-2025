@@ -1,35 +1,49 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+function TempConverter({initial = 0}) {
+  const toC = (f: number) => (f - 32) * 5/9
+  const [cVal, setC] = useState(initial)
+  
+  const toF = (c: number) => (c * 9/5) + 32  
+  const [fVal, setF] = useState(toF(initial))
+  
+
+
+  const updateValue = (e:any, type: string = "C") => {
+    // console.log(e.target.value)
+    const input = e.target.value
+    if (type=="C") {
+      setF(toF(input))
+      setC(input)
+    } else {
+      setC(toC(input))
+      setF(input)
+    }
+
+
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+     <h2>Temperature Converter</h2>
+    <div className="temp-box">
+    </div>
+    <div className="temp-box">
+    <h2>F</h2><input type="number" value={fVal} onChange={(e) => updateValue(e,"F")}  />
+    </div>
+    <div>
+    <h2>C</h2>
+     <input type="number" value={cVal} onChange={(e) => updateValue(e,"C")}/>
+    </div>
+
     </>
   )
 }
 
-export default App
+export default function App() {
+  return <>
+    <h1>Hello</h1>
+    <TempConverter/>
+  </>
+}
