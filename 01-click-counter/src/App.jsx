@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import './App.css'
 
-function Counter({initial = 0, step = 1, MAX = 10}) {
+function Counter({initial = 0, step = 1, max = 10}) {
 
 const [count, setCount] = useState(initial)
 function increment() {
-setCount(c => Math.min(c+step,MAX))
+setCount(c => Math.min(c+step,max))
 }
-
 function resetCount() {
   setCount(initial)
 }
@@ -15,7 +14,7 @@ function resetCount() {
   return (
     <>
       <div>
-        <button onClick={increment} disabled={count >= MAX}>Count: {count}
+        <button onClick={increment} disabled={count >= max}>Count: {count}
         </button>
         <br />
         <button onClick={resetCount} >Reset</button>
@@ -24,8 +23,6 @@ function resetCount() {
   )
 }
 
-
-
 export default function App() {
-  return <Counter initial={0} step= {1} MAX={11}/>
+  return <Counter initial={0} step= {1} max={11}/>
 }
