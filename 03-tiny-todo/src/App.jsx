@@ -1,35 +1,86 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+function TodoApp() {
+const DUMMY_DATA = [{id: Date.now(), title: "Take out the trash", dueDate: "10/20/2025"}]
+const [todos, setTodos] = useState(DUMMY_DATA)
 
+function addTodo(todo) {
+  console.log(todo)
+    const newTodo = {
+      id: Date.now(),
+      title: todo.inputValue,
+      dueDate: todo.dateValue
+    }
+    setTodos(prev => [...prev, newTodo])
+}
+
+function deleteTodo(itemId) {
+  const newTodo = todos.filter(todo => todo.id != itemId)
+  setTodos(newTodo)
+}
+
+  function TodoForm({ addTodo }) {
+    const [inputValue, setInputValue] = useState('')
+    const [dateValue, setDateValue] = useState('')
+    const handleSubmit = (e) => {
+      e.preventDefault()
+      if (inputValue.trim() && dateValue) {
+        
+        addTodo({inputValue, dateValue})
+      }
+    }
+    
+    return (
+      <form onSubmit={handleSubmit}>
+        <h2>Add a Todo</h2>
+        <input type="text" 
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+        />
+        <h3>Due Date:</h3>
+        <input type="date" 
+        onChange={(e) => setDateValue(e.target.value)} />
+        <button>Add it!</button>
+      </form>
+    )
+  }
+
+function TodoList({ todos }) {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <ul>
+      {todos.map((item) => 
+        <TodoItem key={item.id} item={item} deleteTodo={deleteTodo}/>     
+      )}
+      
+    </ul>
   )
 }
 
+function TodoItem({ item, deleteTodo }) {
+  return (
+    <li>
+      Title: {item.title} <br/>
+      Due: {item.dueDate}
+      <button onClick={() => deleteTodo(item.id)}>Delete</button>
+    </li>
+    )
+  }
+
+  return (
+  <div>
+    <h1>Mini Todo</h1>
+    <TodoForm addTodo={addTodo}/>
+    <TodoList todos={todos} />
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <>
+    <TodoApp />
+    </>
+  )
+}
 export default App
