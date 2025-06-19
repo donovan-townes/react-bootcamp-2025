@@ -20,7 +20,16 @@ function deleteTodo(itemId) {
   setTodos(newTodo)
 }
 
-  function TodoForm({ addTodo }) {
+  return (
+  <div>
+    <h1>Mini Todo</h1>
+    <TodoForm addTodo={addTodo}/>
+    <TodoList todos={todos} deleteTodo={deleteTodo} />
+    </div>
+  )
+}
+
+function TodoForm({ addTodo }) {
     const [inputValue, setInputValue] = useState('')
     const [dateValue, setDateValue] = useState('')
     const handleSubmit = (e) => {
@@ -46,7 +55,7 @@ function deleteTodo(itemId) {
     )
   }
 
-function TodoList({ todos }) {
+function TodoList({ todos, deleteTodo }) {
   return (
     <ul>
       {todos.map((item) => 
@@ -66,15 +75,6 @@ function TodoItem({ item, deleteTodo }) {
     </li>
     )
   }
-
-  return (
-  <div>
-    <h1>Mini Todo</h1>
-    <TodoForm addTodo={addTodo}/>
-    <TodoList todos={todos} />
-    </div>
-  )
-}
 
 function App() {
   return (
