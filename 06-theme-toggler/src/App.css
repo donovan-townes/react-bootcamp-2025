@@ -18,19 +18,26 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.light {
+  background-color: rgb(206, 228, 215);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.dark {
+  background-color: rgb(28, 47, 47);
+}
+
+.button-dark {
+  background-color: dimgray;
+}
+
+.button-light {
+  background-color: cadetblue;
+}
+
+div {
+  padding: 20px;
+  border-radius: 15px;
+
 }
 
 .card {

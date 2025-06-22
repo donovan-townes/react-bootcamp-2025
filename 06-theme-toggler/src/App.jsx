@@ -1,35 +1,64 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect } from 'react'
+import { createContext } from 'react'
+import { useContext } from 'react'
 import './App.css'
 
+const ThemeContext = createContext(null)
 function App() {
-  const [count, setCount] = useState(0)
-
+const prevTheme = localStorage.getItem("theme")
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <ThemeToggler storedTheme={prevTheme ? prevTheme : "dark"}/>
     </>
   )
 }
 
 export default App
+
+// ---- Theme Toggler
+function ThemeToggler({ storedTheme }) {
+
+  const [theme ,setTheme] = useState(storedTheme)
+  useEffect((() => {
+    localStorage.setItem("theme", theme)
+  }
+  ), [theme])
+  
+
+  return (
+    <>
+    <ThemeContext value={theme}>
+    <div className={theme}>
+    <h1>Theme Toggler</h1>
+    <Display setTheme={setTheme}/>
+    </div>
+    </ThemeContext>
+    </>
+  )
+}
+
+function Display ({setTheme}) {
+  return (
+    <div>
+    <p>Toggle Theme</p>
+    <Button action={() => setTheme("light")}>
+      ☀️
+    </Button>
+    <Button action ={() => setTheme("dark")}>
+      🌙
+    </Button>
+    </div>
+  )
+}
+
+function Button({action, children}) {
+  const theme = useContext(ThemeContext)  
+  return (
+    <button className={`button-${theme}`}
+    onClick={action}
+    >
+    {children}
+    </button>
+  )
+}
