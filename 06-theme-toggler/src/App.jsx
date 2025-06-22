@@ -6,10 +6,10 @@ import './App.css'
 
 const ThemeContext = createContext(null)
 function App() {
-const prevTheme = localStorage.getItem("theme")
+// const prevTheme = localStorage.getItem("theme")
   return (
     <>
-    <ThemeToggler storedTheme={prevTheme ? prevTheme : "dark"}/>
+    <ThemeToggler/>
     </>
   )
 }
@@ -17,9 +17,8 @@ const prevTheme = localStorage.getItem("theme")
 export default App
 
 // ---- Theme Toggler
-function ThemeToggler({ storedTheme }) {
-
-  const [theme ,setTheme] = useState(storedTheme)
+function ThemeToggler() {
+  const [theme ,setTheme] = useState(() => localStorage.getItem("theme") || "dark")
   useEffect((() => {
     localStorage.setItem("theme", theme)
   }
@@ -28,35 +27,31 @@ function ThemeToggler({ storedTheme }) {
 
   return (
     <>
-    <ThemeContext value={theme}>
+    <ThemeContext.Provider value={{theme, setTheme}}>
     <div className={theme}>
     <h1>Theme Toggler</h1>
-    <Display setTheme={setTheme}/>
+    <Display/>
     </div>
-    </ThemeContext>
+    </ThemeContext.Provider>
     </>
   )
 }
 
-function Display ({setTheme}) {
+function Display () {
   return (
     <div>
     <p>Toggle Theme</p>
-    <Button action={() => setTheme("light")}>
-      ☀️
-    </Button>
-    <Button action ={() => setTheme("dark")}>
-      🌙
-    </Button>
+    <Button>☀️</Button>
+    <Button>🌙</Button>
     </div>
   )
 }
 
-function Button({action, children}) {
-  const theme = useContext(ThemeContext)  
+function Button({children}) {
+  const {theme, setTheme} = useContext(ThemeContext)  
   return (
     <button className={`button-${theme}`}
-    onClick={action}
+    onClick={() => setTheme(theme=== "dark" ? "light" : "dark")}
     >
     {children}
     </button>
